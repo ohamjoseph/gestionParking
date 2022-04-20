@@ -1,0 +1,27 @@
+{% extends 'client/base/base.html' %}
+
+{% block content %}
+{% if places.count == 0 %}
+    <div class="alert alert-danger" role="alert">
+        Le parking est plein
+    </div>
+{% else %}
+    <div class=" border border-light rounded p-4">
+        
+        <div class="d-flex flex-wrap justify-content-between">
+            {% for place in places %}
+            
+                <div class="col-md-2 col-sm-6 m-1 p-0 text-center {%if place.status%} bg-danger {% else %} bg-light {% endif %} border border-white rounded">
+                    <a href="{% url 'demande' place.numPlace  %}" class="container-fuid btn btn-lg p-3 font-weight-bold {%if place.status%} text-white {% endif %}">
+                        {{place.numPlace}}
+                    </a>
+                   
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+       
+    </div>
+{% endif %}
+
+{% endblock %}

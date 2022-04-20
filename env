@@ -1,0 +1,11 @@
+ %Creation de l'envronnement virtuel
+
+ python -m venv env_p
+
+ %Activation
+
+..\env_p\Scripts\activate
+
+%installation des depences
+
+pip install -r requirements.txt

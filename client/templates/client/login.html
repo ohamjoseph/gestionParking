@@ -1,0 +1,46 @@
+{% extends 'client/base/main.html'%}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+<div class="container d-flex justify-content-center pt-3 mt-3">
+<div class="container col-6 p-5 m-5 border shadow-sm">
+    <h1 class="d-flex justify-content-center">Se connecter</h1>
+    <hr />
+    {% if error %}
+    <div class="d-flex justify-content-center text-danger mb-3 strong ">Nom d'utilisateur ou mot de passe incorrect
+    </div>
+    {% endif %}
+    
+        <form method="post">
+        
+            {% csrf_token %}
+        
+            <div class="form-group">
+        
+                {{ form.username|as_crispy_field }}
+        
+            </div>
+            <div class="form-group">
+        
+                {{ form.password|as_crispy_field }}
+            </div>
+        
+            <button type="submit" class="btn mt-1 btn-primary">Se connecter</button>
+        </form>
+    
+    
+</div>
+</div>
+
+
+{% endblock%}
+
+{% block script %}
+<!-- jQuery before Propeller.js -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{% static 'dist/js/propeller.min.js' %}"></script>
+{% endblock %}

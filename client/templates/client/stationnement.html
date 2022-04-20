@@ -1,0 +1,146 @@
+{% extends 'client/base/base.html' %}
+{% load static %}
+{% block content %}
+{% if places.count == 0 %}
+<div class="alert alert-danger" role="alert">
+    Le parking est plein
+</div>
+{% else %}
+<div class=" border border-light rounded p-4">
+    <div>
+        <div class="fw-bold h3">
+            Stationnement en cours
+        </div>
+        <hr/>
+    
+        <div class="d-flex flex-wrap justify-content-between">
+            
+            {% for stat in stationnements %}
+                {% if stat.dateF == None %}
+
+                    <div class="card my-2">
+                        <div class="card-header text-white fw-bold bg-secondary">
+                            Info stationnement
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><span class="fw-bold">Date de debut :</span> {{stat.dateD}}</li>
+                                <li class="list-group-item"><span class="fw-bold">Date de fin :</span> {{stat.dateF|default_if_none:"--"}} </li>
+                                <li class="list-group-item"><span class="fw-bold">Place :</span> {{stat.place}}</li>
+                                <li class="list-group-item"><span class="fw-bold">Etat :</span>
+                                    <span class=" fw-bold text-danger"> Encours </span>
+                                </li>
+                                <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Payer</a>
+                            </ul>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <hr/>
+    <div>
+        <div class="fw-bold h3">
+            Stationnement precedent
+        </div>
+        <hr />
+
+        <div class="d-flex flex-wrap justify-content-between">
+            {% for stat in stationnements %}
+                {% if stat.dateF != None %}
+                
+                    <div class="card my-2">
+                        <div class="card-header text-white fw-bold bg-success">
+                            Info stationnement
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><span class="fw-bold">Date de debut :</span> {{stat.dateD}}</li>
+                                <li class="list-group-item"><span class="fw-bold">Date de fin :</span> {{stat.dateF|default_if_none:"--"}}</li>
+                                <li class="list-group-item"><span class="fw-bold">Place :</span> {{stat.place}}</li>
+                                <li class="list-group-item"><span class="fw-bold">Etat :</span>
+                                    <span class=" fw-bold text-success"> Fermé </span>
+                                </li>
+                                
+                            </ul>
+                        </div>
+                    </div>
+                
+                {% endif %}
+            
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    Launch static backdrop modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Mode de payement</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-center align-items-stretch">
+
+                    <div class="col-6">
+                        <a href="{% url 'pay' 1  %}" class="text-decoration-none text-dark">
+                            <div class="card m-1 mb-2 row align-items-center" style="max-width: 540px;height: 85%;">
+                                <div class="row g-0 align-items-center ">
+                                    <div class="col-md-4">
+                                        <img src="{% static 'client/image/om2.png' %}" class="img-fluid rounded-start" alt="...">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h6 class="card-title">Orange Money</h6>
+                                            <!-- <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
+                                                                    content. This content is a little bit longer.</p>
+                                                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-6">
+                        <a href="{% url 'pay' 1 %}" class="text-decoration-none text-dark">
+                            <div class="card m-1 mb-2 row align-items-center" style="max-width: 540px;height: 85%;">
+                                <div class="row g-0 row align-items-center">
+                                    <div class="col-md-4">
+                                        <img src="{% static 'client/image/mm.png' %}" class="img-fluid rounded-start" alt="...">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h6 class="card-title">Orange Money</h6>
+                                            <!-- <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
+                                                                                        content. This content is a little bit longer.</p>
+                                                                                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Understood</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
