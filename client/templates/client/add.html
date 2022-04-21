@@ -4,10 +4,12 @@
 
 
 <div class="border px-5 py-2 shadow-sm">
-    <h1 class="strong d-flex justify-content-center text-white">Inscription</h1>
-    <hr class="color-primary">
-    {% crispy form %}
-    {% csrf_token %}
+    <div class="conteiner-fluid">
+        <h1 class="strong d-flex justify-content-center">Inscription</h1>
+        <hr class="color-primary">
+        {% crispy form %}
+        {% csrf_token %}
+    </div>
 </div>
 
 {% endblock %}

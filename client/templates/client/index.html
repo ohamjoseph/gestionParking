@@ -1,23 +1,42 @@
 {% extends 'client/base/base.html' %}
 
 {% block content %}
+
+{% if error %}
+<div class="container alert alert-danger d-flex justify-content-center text-danger mb-3 strong ">Vous avez deja un stationnement en cours
+</div>
+{% endif %}
 {% if places.count == 0 %}
     <div class="alert alert-danger" role="alert">
         Le parking est plein
     </div>
 {% else %}
-    <div class=" border border-light rounded p-4">
-        
+    <div class=" border border-light rounded p-4 border shadow-sm">
+        <h2 class="text-center">Bienvenu sur e-Parking</h2>
+        <h5 class="border-bottom border-danger p-2 mb-2">Places du parking</h5>
         <div class="d-flex flex-wrap justify-content-between">
             {% for place in places %}
+                {%if place.status%}
             
-                <div class="col-md-2 col-sm-6 m-1 p-0 text-center {%if place.status%} bg-danger {% else %} bg-light {% endif %} border border-white rounded">
-                    <a href="{% url 'demande' place.numPlace  %}" class="container-fuid btn btn-lg p-3 font-weight-bold {%if place.status%} text-white {% endif %}">
-                        {{place.numPlace}}
-                    </a>
-                   
-                </div>
-            </a>
+                    <div class="col-md-2 col-sm-6 m-1 p-0 text-center bg-danger border border-white rounded" >
+                        <a class="container-fuid btn btn-lg p-3 font-weight-bold {%if place.status%} text-white {% endif %}" disabled="disabled">
+                            {{place.numPlace}}
+                        </a>
+                    
+                    </div>
+                {% else %}
+                    <div
+                        class="col-md-2 col-sm-6 m-1 p-0 text-center bg-light border border-white rounded">
+                        <a href="{% url 'demande' place.numPlace  %}"
+                            class="container-fuid btn btn-lg p-3 font-weight-bold {%if place.status%} text-white {% endif %}"
+                            disabled="disabled">
+                            {{place.numPlace}}
+                        </a>
+                    
+                    </div>
+                {% endif %}
+
+        
             {% endfor %}
         </div>
        

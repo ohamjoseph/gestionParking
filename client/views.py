@@ -13,21 +13,22 @@ from .models import *
 typeList = ['Orange Money','Moov Money']
 
 
+
 # Create your views here.
 
 def index(request):
-    if request.user.is_authenticated:
-        client = Utilisateur.objects.get(user = request.user)
-        stat = Stationnement.objects.filter(client = client, dateF__isnull= True).count()
+    # if request.user.is_authenticated:
+    #     client = Utilisateur.objects.get(user = request.user)
+    #     stat = Stationnement.objects.filter(client = client, dateF__isnull= True).count()
         
-        if stat:
-            return redirect('stationnement')
+    #     if stat:
+    #         return redirect('stationnement')
 
-        places = Place.objects.all()
-        return render(request,'client/index.html', context={'places':places})
-    
+    #     places = Place.objects.all()
+    #     return render(request,'client/index.html', context={'places':places})
+    placelink = True
     places = Place.objects.all()
-    return render(request,'client/index.html', context={'places':places})
+    return render(request,'client/index.html', context={'places':places,'placelink':placelink})
 
 def createClient(request):
     
@@ -58,10 +59,19 @@ def createClient(request):
 
 
 def demandeDePlace(request, numPlace):
-
+    error = False
+    placelink = True
     if request.user.is_authenticated:
-        place = Place.objects.get(numPlace = numPlace)
         client = Utilisateur.objects.get(user = request.user)
+        try:
+            if client.statEncours():
+                places = Place.objects.all()
+                error = True
+                return render(request,'client/index.html', context={'places':places, 'error':error,'placelink':placelink})
+        except:
+            pass
+            
+        place = Place.objects.get(numPlace = numPlace)
         Stationnement.objects.create(place = place, client = client)
         place.status = True
         place.save()
@@ -73,11 +83,11 @@ def demandeDePlace(request, numPlace):
         return redirect('login')
 
 def stationnement(request):
-
+    statlink = True
     if request.user.is_authenticated:
         client = Utilisateur.objects.get( user = request.user )
-        stat = Stationnement.objects.all().filter(client = client )
-        return render(request,'client/stationnement.html', context={'stationnements':stat})
+        stat = Stationnement.objects.all().filter(client = client ).order_by('-dateD')
+        return render(request,'client/stationnement.html', context={'stationnements':stat, 'statlink':statlink})
 
     return redirect('index')
 
@@ -85,7 +95,7 @@ def payement(request, type):
     if request.user.is_authenticated:
         client = Utilisateur.objects.get( user = request.user )
         stat = client.statEncours()
-        print("000000000",stat)
+        
         type = int(type)
 
         Payement.objects.create(numPay = client.numTel, typePay = typeList[type], stat = stat)

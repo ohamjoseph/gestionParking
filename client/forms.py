@@ -43,7 +43,7 @@ class InscriptionForm(forms.ModelForm):
             ),
            
         )
-        self.helper.add_input(Submit('submit', 'Save person'))
+        self.helper.add_input(Submit('submit', 'Enregistrer'))
         self.helper.add_input(Reset('reset', 'annuler',css_class='btn-danger'))
 
 class ConnexionForm(forms.Form):
