@@ -46,6 +46,41 @@ class InscriptionForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', 'Enregistrer'))
         self.helper.add_input(Reset('reset', 'annuler',css_class='btn-danger'))
 
+
+
+# class AbonnementForm(forms.ModelForm):
+#     class Meta:
+#         model = User
+#         fields = '__All__'
+
+#     def __init__(self, *args, **kwargs):
+#         super(AbonnementForm, self).__init__(*args, **kwargs)
+
+#         # If you pass FormHelper constructor a form instance
+#         # It builds a default layout with all its fields
+#         self.helper = FormHelper(self)
+#         self.helper.form_method = 'post'
+#         self.helper.layout = Layout(
+#             Row(
+#                 Column('first_name', css_class = 'form-group col-md-6 mb-0' ),
+#                 Column('last_name', css_class = 'form-group col-md-6 mb-0'),
+#                 css_class = 'form-row'
+#             ),
+#             Row(
+#                 Column('numTel', css_class = 'form-group col-md-6 mb-0'),
+#                 Column('numPermis', css_class = 'form-group col-md-6 mb-0'),
+#                 css_class='form-row'
+#             ),
+#             Row(
+#                 Column('username', css_class = 'form-group col-md-6 mb-0'),
+#                 Column('password', css_class = 'form-group col-md-6 mb-0'),
+#                 css_class='form-row'
+#             ),
+           
+#         )
+#         self.helper.add_input(Submit('submit', 'Enregistrer'))
+#         self.helper.add_input(Reset('reset', 'annuler',css_class='btn-danger'))
+
 class ConnexionForm(forms.Form):
 
     username = forms.CharField(label='Nom utilisateur',widget=forms.TextInput(attrs={'type':'text','class':'form-control'}))

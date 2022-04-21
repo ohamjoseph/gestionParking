@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.utils import timezone
 from django.shortcuts import render, redirect
-
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
@@ -11,7 +11,6 @@ from .models import *
 #Type de payement
 
 typeList = ['Orange Money','Moov Money']
-
 
 
 # Create your views here.
@@ -141,4 +140,38 @@ def connexion(request):
 def deconnexion(request):
     logout(request)
     return  redirect('index')
+
+def abonnement(request, error = False):
+    
+    if request.user.is_authenticated:
+        abonnement = Abonnement.objects.all()
+        client = Utilisateur.objects.get( user = request.user )
+        context = {
+            'abonnement':abonnement,
+            'abonlink':True,
+            'client': client,
+            'error' : error,
+        }
+        return render(request, 'client/abonnement.html', context=context )
+    return redirect('login')
+
+def payementA(request, type):
+    if request.user.is_authenticated:
+        client = Utilisateur.objects.get( user = request.user )
+        abon = client.abonnementEncours()
+        if abon.encour:
+            return abonnement(request, True)
+        dateF = datetime.now() + relativedelta(months=1)
+        if Abonnement.objects.last():
+            derN = Abonnement.objects.last().numA+1
+        else:
+            derN = 1
+        
+        abon = Abonnement.objects.create(numA = derN, dateF = dateF, client = client)
+        
+        pay = Payement.objects.create(numPay = client.numTel, typePay = typeList[int(type)], abonnement = abon)
+
+        return redirect('abonnement')
+
+    return redirect('index')
 

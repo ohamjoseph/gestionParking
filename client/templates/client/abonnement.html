@@ -1,0 +1,176 @@
+{% extends 'client/base/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+
+<div class="border px-5 py-2 shadow-sm">
+    
+    
+    {% if error %}
+    <div class="alert alert-danger text-center" role="alert">
+        Vous avez droit a un seul abonnement a la fois.
+    </div>
+    {% endif %}
+
+    <div class=" border border-light rounded p-4">
+        <div>
+            <div class="fw-bold h3">
+                Abonnement en cours
+            </div>
+            <hr />
+            {% if not client.encour.encour %}
+            <a class="btn btn-danger mb-3" data-bs-toggle="modal" href="#exampleModalToggle" role="button">S'abonner</a>
+            <div class="alert alert-success text-center" role="alert">
+                Vous n'avez pas d'abonnement en cours
+            </div>
+            {% endif %}
+            <div class="d-flex flex-wrap justify-content-between">
+
+                {% for abon in abonnement %}
+                {% if abon.encour %}
+    
+                <div class="card my-2">
+                    <div class="card-header text-white fw-bold bg-secondary">
+                        Info abonnement
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><span class="fw-bold">Date de debut : </span> {{abon.dateD}}</li>
+                            <li class="list-group-item"><span class="fw-bold">Date de fin :</span>
+                                {{abon.dateF}} </li>
+                            <!-- <li class="list-group-item"><span class="fw-bold">Place :</span> {{stat.place}}</li> -->
+                            <li class="list-group-item"><span class="fw-bold">Etat :</span>
+                                <span class=" fw-bold text-danger"> Encours </span>
+                            </li>
+                            <!-- <a href="#" class="btn btn-success" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop">Payer</a> -->
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <hr />
+        <div>
+            <div class="fw-bold h3">
+                Abonnements precedent
+            </div>
+            <hr />
+    
+            <div class="d-flex flex-wrap justify-content-between">
+                {% for abon in abonnement %}
+                {% if not abon.encour  %}
+    
+                <div class="card my-2">
+                    <div class="card-header text-white fw-bold bg-success">
+                        Info stationnement
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><span class="fw-bold">Date de debut :</span> {{stat.abon}}</li>
+                            <li class="list-group-item"><span class="fw-bold">Date de fin :</span>
+                                {{abon.dateF|default_if_none:"--"}}</li>
+                            <!-- <li class="list-group-item"><span class="fw-bold">Place :</span> {{stat.place}}</li> -->
+                            <li class="list-group-item"><span class="fw-bold">Etat :</span>
+                                <span class=" fw-bold text-danger"> Expiré </span>
+                            </li>
+    
+                        </ul>
+                    </div>
+                </div>
+    
+                {% endif %}
+    
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel">Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span class="fw-bold h5">Abonnement a une durée d'un mois.</span> <br />
+                Voulez vous avoir un abonnement ?
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-bs-target="#exampleModalToggle2"
+                    data-bs-toggle="modal">S'Abonner</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Mode de payement</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-center align-items-stretch">
+
+                    <div class="col-6">
+                        <a href="{% url 'pay2' 0  %}" class="text-decoration-none text-dark">
+                            <div class="card m-1 mb-2 row align-items-center" style="max-width: 540px;height: 85%;">
+                                <div class="row g-0 align-items-center ">
+                                    <div class="col-md-4">
+                                        <img src="{% static 'client/image/om2.png' %}" class="img-fluid rounded-start"
+                                            alt="...">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h6 class="card-title">Orange Money</h6>
+                                            <!-- <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
+                                                                                    content. This content is a little bit longer.</p>
+                                                                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-6">
+                        <a href="{% url 'pay2' 1 %}" class="text-decoration-none text-dark">
+                            <div class="card m-1 mb-2 row align-items-center" style="max-width: 540px;height: 85%;">
+                                <div class="row g-0 row align-items-center">
+                                    <div class="col-md-4">
+                                        <img src="{% static 'client/image/mm.png' %}" class="img-fluid rounded-start"
+                                            alt="...">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h6 class="card-title">Moov Money</h6>
+                                            <!-- <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
+                                                                                                        content. This content is a little bit longer.</p>
+                                                                                                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Back to
+                    first</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
