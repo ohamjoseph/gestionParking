@@ -6,8 +6,8 @@ from .models import *
 
 class InscriptionForm(forms.ModelForm):
 
-    numTel = forms.IntegerField()
-    numPermis = forms.IntegerField()
+    numTel = forms.IntegerField(label='N. téléphone')
+    numPermis = forms.IntegerField(label='N. Permis')
 
     class Meta:
         model = User
@@ -16,7 +16,14 @@ class InscriptionForm(forms.ModelForm):
             'last_name',
             'first_name',
             'password'
-        ]   
+        ]
+        labels ={
+            'username':'Pseudo',
+            'last_name':'Prénom',
+            'first_name':'Nom',
+            'password':'Mot de passe',
+            
+        }   
 
     def __init__(self, *args, **kwargs):
         super(InscriptionForm, self).__init__(*args, **kwargs)

@@ -30,6 +30,10 @@ def index(request):
     return render(request,'client/index.html', context={'places':places,'placelink':placelink})
 
 def createClient(request):
+    """
+        Creer un client
+        
+    """
     
     if request.method == 'POST':
         type = "client"
@@ -58,12 +62,16 @@ def createClient(request):
 
 
 def demandeDePlace(request, numPlace):
+    """
+        Affecte une place disponible au client, lorsque celui ci n'occupe pas deja une place
+
+    """
     error = False
     placelink = True
     if request.user.is_authenticated:
         client = Utilisateur.objects.get(user = request.user)
         try:
-            if client.statEncours():
+            if client.statEncours(): # Vérifier si le client n'occupe pas deja une place
                 places = Place.objects.all()
                 error = True
                 return render(request,'client/index.html', context={'places':places, 'error':error,'placelink':placelink})
@@ -75,29 +83,36 @@ def demandeDePlace(request, numPlace):
         place.status = True
         place.save()
 
-        return redirect('stationnement')
+        return stationnement(request,sucess = True)
     
     else:
 
         return redirect('login')
 
-def stationnement(request):
+def stationnement(request,sucess = False):
+    """
+       Recupere les informations du client connecté
+        
+    """
+    
     statlink = True
     if request.user.is_authenticated:
         client = Utilisateur.objects.get( user = request.user )
         stat = Stationnement.objects.all().filter(client = client ).order_by('-dateD')
-        return render(request,'client/stationnement.html', context={'stationnements':stat, 'statlink':statlink})
+        return render(request,'client/stationnement.html', context={'stationnements':stat,'client':client, 'statlink':statlink,'sucess':sucess})
 
     return redirect('index')
 
-def payement(request, type):
+def payement(request, type): # fonction en charge du payement 
+
     if request.user.is_authenticated:
         client = Utilisateur.objects.get( user = request.user )
         stat = client.statEncours()
-        
-        type = int(type)
 
-        Payement.objects.create(numPay = client.numTel, typePay = typeList[type], stat = stat)
+        abon = client.abonnementEncours()
+        if not (type == 'abon' and abon.encour):
+            type = int(type)
+            Payement.objects.create(numPay = client.numTel, typePay = typeList[type], stat = stat)
         
         stat.dateF = datetime.now()
         stat.place.status = False
@@ -159,8 +174,11 @@ def payementA(request, type):
     if request.user.is_authenticated:
         client = Utilisateur.objects.get( user = request.user )
         abon = client.abonnementEncours()
-        if abon.encour:
-            return abonnement(request, True)
+        try:
+            if abon.encour:
+                return abonnement(request, True)
+        except:
+            pass
         dateF = datetime.now() + relativedelta(months=1)
         if Abonnement.objects.last():
             derN = Abonnement.objects.last().numA+1
@@ -174,4 +192,5 @@ def payementA(request, type):
         return redirect('abonnement')
 
     return redirect('index')
+
 

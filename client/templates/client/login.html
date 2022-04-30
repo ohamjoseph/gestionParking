@@ -3,8 +3,12 @@
 {% load crispy_forms_tags %}
 
 {% block body %}
-<div class="container d-flex justify-content-center pt-3 mt-3">
-<div class="container col-6 p-5 m-5 border shadow-sm">
+<div>
+    <h2 class="text-center text-danger pt-3 mt-5">e-Parking</h2>
+</div>
+<div class="container d-flex justify-content-center">
+    
+<div class="container col-6 p-5 m-3 border rounded shadow-sm">
     <h1 class="d-flex justify-content-center">Se connecter</h1>
     <hr />
     {% if error %}
@@ -29,7 +33,7 @@
             <button type="submit" class="btn mt-1 btn-primary">Se connecter</button>
         </form>
         <div class="d-flex justify-content-end">
-            <a class = "nav-link text-dark fw-bold" href="{% url 'add_client' %}">S'inscrire</a>
+            <a class = "nav-link text-muted fw-bold" href="{% url 'add_client' %}">S'inscrire</a>
         </div>
     
     

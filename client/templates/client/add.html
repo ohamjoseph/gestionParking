@@ -1,15 +1,22 @@
-{% extends 'client/base/base.html' %}
+{% extends 'client/base/main.html' %}
 {% load crispy_forms_tags %}
-{% block content %}
+{% block body %}
 
-
-<div class="border px-5 py-2 shadow-sm">
-    <div class="conteiner-fluid">
-        <h1 class="strong d-flex justify-content-center">Inscription</h1>
-        <hr class="color-primary">
-        {% crispy form %}
-        {% csrf_token %}
-    </div>
+<div>
+    <h2 class="text-center text-danger p-2 mt-3">e-Parking</h2>
 </div>
+<div class="container d-flex justify-content-center">
+
+    <div class="border px-5 py-2 shadow-sm">
+        <div class="conteiner-fluid">
+            <h1 class="strong d-flex justify-content-center">Inscription</h1>
+            <hr class="color-primary">
+            {% crispy form %}
+            {% csrf_token %}
+        </div>
+    </div>
+
+</div>
+
 
 {% endblock %}
